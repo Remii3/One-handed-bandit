@@ -40,12 +40,22 @@ class Stats {
     document.querySelector("li:nth-child(3) span").innerHTML = this.loses;
   }
 }
+
+const pageRefresh = () => {
+  window.location.reload();
+};
 class Game extends Wallet {
   constructor() {
     super();
     const stats = new Stats();
-    btnStart.addEventListener("click", () => {
-      this.render(enteredCash.value);
+    btnStart.addEventListener("click", (e) => {
+      e.preventDefault();
+      if (enteredCash.value > 0) {
+        this.render(enteredCash.value);
+      } else {
+        enteredCash.classList.add("wrongValue");
+        return;
+      }
     });
     this.render = (enteredCash) => {
       let drawnColors = [];
@@ -98,7 +108,13 @@ class Game extends Wallet {
     };
   }
 }
-
-reset.addEventListener("click", () => window.location.reload());
+enteredCash.addEventListener("keyup", () => {
+  if (enteredCash.value > 0) {
+    enteredCash.classList.remove("wrongValue");
+  } else {
+    return;
+  }
+});
+reset.addEventListener("click", pageRefresh);
 
 const gameStart = new Game();
